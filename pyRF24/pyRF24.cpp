@@ -242,19 +242,19 @@ BOOST_PYTHON_MODULE(python_nrf24l01)
 
 #endif // BCM2835_H
 
-    bp::enum_<rf24_crclength_e>("rf24_crclength_e")
+    bp::enum_<rf24_crclength_e>("rf24_crc_length_e")
         .value("RF24_CRC_DISABLED", RF24_CRC_DISABLED)
         .value("RF24_CRC_8", RF24_CRC_8)
         .value("RF24_CRC_16", RF24_CRC_16)
         .export_values();
 
-    bp::enum_<rf24_datarate_e>("rf24_datarate_e")
+    bp::enum_<rf24_datarate_e>("rf24_data_rate_e")
         .value("RF24_1MBPS", RF24_1MBPS)
         .value("RF24_2MBPS", RF24_2MBPS)
         .value("RF24_250KBPS", RF24_250KBPS)
         .export_values();
 
-    bp::enum_<rf24_pa_dbm_e>("rf24_pa_dbm_e")
+    bp::enum_<rf24_pa_dbm_e>("rf24_pa_level_e")
         .value("RF24_PA_MIN", RF24_PA_MIN)
         .value("RF24_PA_LOW", RF24_PA_LOW)
         .value("RF24_PA_HIGH", RF24_PA_HIGH)
@@ -265,9 +265,7 @@ BOOST_PYTHON_MODULE(python_nrf24l01)
     // ******************** RF24 class  **************************
     //
     bp::class_<RF24>("RF24", bp::init<uint8_t, uint8_t>((bp::arg("_cepin"), bp::arg("_cspin"))))
-#if defined(RF24_LINUX) && !defined(MRAA)
-        .def(bp::init<uint8_t, uint8_t, uint32_t>((bp::arg("_cepin"), bp::arg("_cspin"), bp::arg("spispeed"))))
-#endif
+        .def(bp::init<uint8_t, uint8_t, uint32_t>((bp::arg("_cepin"), bp::arg("_cspin"), bp::arg("_spi_speed"))))
         .def("available", (bool (::RF24::*)())(&::RF24::available))
         .def("available_pipe", &available_wrap) // needed to rename this method as python does not allow such overloading
         .def("begin", &RF24::begin)
