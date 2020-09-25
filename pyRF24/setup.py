@@ -5,11 +5,9 @@ import sys
 import setuptools
 import crossunixccompiler
 
-version = ""
-
 
 def process_configparams():
-    global version
+    version = ""
     # can't access "../Makefile.inc" from working dir because it's relative.
     # brute force absolute path dynamically.
     script_dir = os.path.split(os.path.abspath(os.getcwd()))[0]
@@ -32,14 +30,14 @@ def process_configparams():
             os.environ[identifier] = value
 
     os.environ["CFLAGS"] = cflags
-
+    return version
 
 if sys.version_info >= (3,):
     BOOST_LIB = "boost_python3"
 else:
     BOOST_LIB = "boost_python"
 
-process_configparams()
+version = process_configparams()
 crossunixccompiler.register()
 
 module_RF24 = setuptools.Extension(
